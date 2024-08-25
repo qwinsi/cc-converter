@@ -1,15 +1,16 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { copyTextToClipboard } from './clipboard'
 import CopiedToast, { LIFETIME } from './components/CopiedToast.vue'
-import Chinese from 'chinese-s2t'
+import { invoke } from '@tauri-apps/api/tauri'
 
 
 const inputText = ref('');
-const output = computed(() => {
-    return Chinese.t2s(inputText.value);
-})
+const output = ref('');
 
+watch(inputText, async (newVal) => {
+  output.value = await invoke('tc2sc', { input: newVal });
+})
 
 const copiedToastShowing = ref(false);
 function triggerToast() {
@@ -99,8 +100,8 @@ onMounted(function() {
     </div>
 
     <footer class="theme-app text-center p-4">
-      <p class="text-white">Powered by <a href="https://github.com/foru17/chinese-s2t"
-          target="_blank">chinese-s2t.js</a></p>
+      <p class="text-white">Powered by <a href="https://crates.io/crates/zhconv"
+          target="_blank">zhconv-rs</a></p>
     </footer>
   </div>
 </template>
