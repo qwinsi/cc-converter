@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "cc-converter",
-    "version": "0.0.2"
+    "version": "0.0.3"
   },
   "tauri": {
     "allowlist": {
@@ -15,6 +15,13 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "process": {
+        "all": false,
+        "exit": true
+      },
+      "os": {
+        "all": true
       }
     },
     "windows": [
