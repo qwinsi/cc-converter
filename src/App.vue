@@ -29,6 +29,7 @@ async function convert() {
 
 watch(inputText, convert);
 watch(phrase, convert);
+watch(mode, convert); // necessary because watch(inputText, convert) doesn't trigger when old inputText === output
 
 const copiedToast = ref(null);
 
