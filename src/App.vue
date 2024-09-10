@@ -1,23 +1,36 @@
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { copyTextToClipboard } from './clipboard'
-import CopiedToast, { LIFETIME } from './components/CopiedToast.vue'
+import CopiedToast from './components/CopiedToast.vue'
 import { invoke } from '@tauri-apps/api/tauri'
+
+const MODE_SC2TC = 0;
+const MODE_TC2SC = 1;
+
+const mode = ref(MODE_SC2TC);
+const phrase = ref(true);
+
+function switchMode() {
+  mode.value = mode.value === MODE_SC2TC ? MODE_TC2SC : MODE_SC2TC;
+  inputText.value = output.value;
+}
 
 
 const inputText = ref('');
 const output = ref('');
 
-watch(inputText, async (newVal) => {
-  output.value = await invoke('tc2sc', { input: newVal });
-})
-
-const copiedToastShowing = ref(false);
-function triggerToast() {
-  copiedToastShowing.value = true;
-
-  setTimeout(() => { copiedToastShowing.value = false }, LIFETIME);
+async function convert() {
+  let func = mode.value === MODE_SC2TC ? 'sc2tc' : 'tc2sc';
+  if(phrase.value) {
+    func += '_phrase';
+  }
+  output.value = await invoke(func, { input: inputText.value });
 }
+
+watch(inputText, convert);
+watch(phrase, convert);
+
+const copiedToast = ref(null);
 
 async function sendToClipboard() {
   if(inputText.value === '') {
@@ -25,7 +38,7 @@ async function sendToClipboard() {
   }
   const ok = await copyTextToClipboard(output.value);
   if(ok) {
-    triggerToast();
+    copiedToast.value.trigger();
   } else {
     alert('Failed to copy to clipboard. Please report this issue.');
   }
@@ -66,32 +79,48 @@ onMounted(function() {
       Convert between Traditional Chinese and Simplified Chinese.
     </div>
 
-    <!-- flex-row for desktop, flex-col for mobile -->
-    <main class="flex-1 flex md:flex-row flex-col p-4">
-      <div class="flex-1 flex flex-col border border-gray-700 min-h-[200px] rounded-lg m-2">
-        <div class="flex justify-between p-2 border-b border-gray-700">
-          <span class="text-app-blue p-2">Traditional Chinese</span>
+    <main class="flex-1 flex flex-col justify-between m-4 ml-6 mr-6 border border-gray-700 rounded-lg">
+      <div class="flex justify-between p-2 border-b border-gray-700">
+        <div class="flex-1 flex justify-between">
+          <span class="text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Simplified Chinese' : 'Traditional Chinese' }}</span>
           <div>
             <button class="text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
-                    v-on:click="inputText=''">Clear</button>
+              v-on:click="inputText = ''">Clear</button>
           </div>
         </div>
-        <textarea ref="inputArea" class="flex-1 text-app-light-black p-4" v-model="inputText"></textarea>
+
+        <button class="pl-1 pr-1 rounded-lg ml-3 mr-3 hover:bg-gray-300 active:bg-gray-400"
+          v-on:click="switchMode">
+          <img class="inline" src="./assets/swap-icon.svg" alt="Swap icon" />
+        </button>
+
+        <div class="flex-1 flex-1 flex justify-between relative">
+          <span class="flex-1 text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Traditional Chinese' : 'Simplified Chinese' }}</span>
+          <div class="flex-1 text-app-light-black p-2">
+            <input type="checkbox" id="phrase" v-model="phrase"/>
+            <label for="phrase">Phrase</label>
+          </div>
+          <button class="flex-1 text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
+            v-on:click="sendToClipboard">Copy</button>
+          <CopiedToast ref="copiedToast" id="copiedToast" />
+        </div>
       </div>
 
-      <div class="flex-1 flex flex-col border border-gray-700 min-h-[200px] rounded-lg m-2">
-        <div class="flex justify-between p-2 border-b border-gray-700">
-          <span class="text-app-blue p-2">Simplified Chinese</span>
-          <div class="relative">
-            <button class="text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
-                    v-on:click="sendToClipboard">Copy</button>
-            <CopiedToast id="copiedToast" :showing="copiedToastShowing" />
+      <!-- flex-row for desktop, flex-col for mobile -->
+      <div class="flex-1 flex md:flex-row flex-col">
+        <!-- input area -->
+        <div class="flex-1 flex flex-col border border-gray-700 min-h-[200px]">
+          <textarea ref="inputArea" class="flex-1 text-app-light-black p-4" v-model="inputText"></textarea>
+        </div>
+
+        <!-- output area -->
+        <div class="flex-1 flex flex-col border border-gray-700 min-h-[200px]">
+          <div class="flex-1 flex flex-col" id="outArea">
+            <div class="flex-1 text-app-light-black p-4"> {{ output }} </div>
           </div>
         </div>
-        <div class="flex-1 flex flex-col" id="outArea">
-          <div class="flex-1 text-app-light-black p-4"> {{ output }} </div>
-        </div>
       </div>
+
     </main>
 
 
