@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { copyTextToClipboard } from './clipboard'
 import CopiedToast from './components/CopiedToast.vue'
-import { invoke } from '@tauri-apps/api/tauri'
+import { invoke } from '@tauri-apps/api/core'
 
 const MODE_SC2TC = 0;
 const MODE_TC2SC = 1;
