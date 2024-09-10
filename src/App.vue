@@ -94,13 +94,13 @@ onMounted(function() {
           <img class="inline" src="./assets/swap-icon.svg" alt="Swap icon" />
         </button>
 
-        <div class="flex-1 flex-1 flex justify-between relative">
+        <div class="flex-1 flex justify-between relative">
           <span class="flex-1 text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Traditional Chinese' : 'Simplified Chinese' }}</span>
           <div class="flex-1 text-app-light-black p-2">
             <input type="checkbox" id="phrase" v-model="phrase"/>
             <label for="phrase">Phrase</label>
           </div>
-          <button class="flex-1 text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
+          <button class="text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
             v-on:click="sendToClipboard">Copy</button>
           <CopiedToast ref="copiedToast" id="copiedToast" />
         </div>
