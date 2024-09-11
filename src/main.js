@@ -4,6 +4,7 @@ import "./assets/main.css";
 
 import { invoke } from '@tauri-apps/api/core'
 import { platform } from '@tauri-apps/plugin-os'
+import { getCurrentWebview } from '@tauri-apps/api/webview';
 
 createApp(App).mount("#app");
 
@@ -28,3 +29,7 @@ if (platformName === 'windows' || platformName === 'linux') {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    void getCurrentWebview().setFocus();
+});

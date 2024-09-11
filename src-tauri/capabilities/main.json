@@ -6,6 +6,7 @@
         "main"
     ],
     "permissions": [
+        "core:webview:allow-set-webview-focus",
         "shell:allow-open",
         "os:allow-platform",
         "os:allow-os-type",
