@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { copyTextToClipboard } from './clipboard'
+import { copyTextToClipboard } from '@qwinsi/clipboard-js'
 import CopiedToast from './components/CopiedToast.vue'
 import { invoke } from '@tauri-apps/api/core'
 

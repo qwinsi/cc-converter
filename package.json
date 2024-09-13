@@ -10,9 +10,10 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@qwinsi/clipboard-js": "^0.1.0",
     "@tauri-apps/api": "^2.0.0-rc.0",
-    "@tauri-apps/plugin-shell": "^2.0.0-rc.0",
     "@tauri-apps/plugin-os": "^2.0.0-rc.0",
+    "@tauri-apps/plugin-shell": "^2.0.0-rc.0",
     "vue": "^3.3.4"
   },
   "devDependencies": {
