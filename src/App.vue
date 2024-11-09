@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { copyTextToClipboard } from '@qwinsi/clipboard-js'
-import CopiedToast from './components/CopiedToast.vue'
+import CopiedToast from '@qwinsi/vue-components/CopiedToast.vue'
 import { invoke } from '@tauri-apps/api/core'
 
 const MODE_SC2TC = 0;
@@ -103,7 +103,7 @@ onMounted(function() {
           </div>
           <button class="text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
             v-on:click="sendToClipboard">Copy</button>
-          <CopiedToast ref="copiedToast" id="copiedToast" />
+          <CopiedToast ref="copiedToast" id="copiedToast" msg="Copied!" />
         </div>
       </div>
 

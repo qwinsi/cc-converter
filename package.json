@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@qwinsi/clipboard-js": "^0.1.0",
+    "@qwinsi/vue-components": "^0.0.2",
     "@tauri-apps/api": "^2.0.0-rc.0",
     "@tauri-apps/plugin-os": "^2.0.0-rc.0",
     "@tauri-apps/plugin-shell": "^2.0.0-rc.0",
