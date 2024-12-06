@@ -72,7 +72,7 @@ onMounted(function() {
       <div class="flex">
         <a class="flex items-center font-medium p-2 mr-2 hover:bg-gray-900" href="https://github.com/qwinsi/cc-converter" target="_blank">
           <img class="inline h-9" src="./assets/github-mark-white.svg" alt="Github logo" />
-          <span class="text-lg ml-2 mr-4">Open-source</span>
+          <span class="text-lg ml-2 mr-4 hide-on-mobile">Open-source</span>
         </a>
       </div>
     </nav>
@@ -83,7 +83,7 @@ onMounted(function() {
     <main class="flex-1 flex flex-col justify-between m-4 ml-6 mr-6 border border-gray-700 rounded-lg">
       <div class="flex justify-between p-2 border-b border-gray-700">
         <div class="flex-1 flex justify-between">
-          <span class="text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Simplified Chinese' : 'Traditional Chinese' }}</span>
+          <span class="text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Simplified' : 'Traditional' }}</span>
           <div>
             <button class="text-app-light-black p-2 rounded-lg hover:bg-gray-300 active:bg-gray-400"
               v-on:click="inputText = ''">Clear</button>
@@ -96,7 +96,7 @@ onMounted(function() {
         </button>
 
         <div class="flex-1 flex justify-between relative">
-          <span class="flex-1 text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Traditional Chinese' : 'Simplified Chinese' }}</span>
+          <span class="flex-1 text-app-blue p-2">{{ mode === MODE_SC2TC ? 'Traditional' : 'Simplified' }}</span>
           <div class="flex-1 text-app-light-black p-2">
             <input type="checkbox" id="phrase" v-model="phrase"/>
             <label for="phrase">Phrase</label>
@@ -180,5 +180,11 @@ onMounted(function() {
   position: absolute;
   top: -55px;
   right: -4px;
+}
+
+@media (max-width: 500px) {
+  .hide-on-mobile {
+    display: none;
+  }
 }
 </style>
